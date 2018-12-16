@@ -1,0 +1,43 @@
+server:
+  port: ${PORT:1115}
+  context-path: /${spring.application.name}
+eureka:
+  instance:
+    hostname: ${HOST_NAME:localhost}
+    preferIpAddress: false
+    instanceId: ${spring.application.name}:${server.port}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+    statusPageUrlPath: ${server.context-path}/info
+    healthCheckUrlPath: ${server.context-path}/health
+    homePageUrl: http://${hostname}/${spring.application.name}/
+    metadata-map:
+      management.context-path: ${server.context-path}
+spring:
+  cloud:
+    bus:
+      enabled: false
+  sleuth:
+    sampler:
+      percentage: 1.0
+  zipkin:
+    base-url: http://localhost:1117/yuewen-zipkin
+zuul:
+  ignoredServices: '*'
+  prefix: /api
+management:  
+  security:  
+    enabled: false
+logging:
+  file: logs/${spring.application.name}.log
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    org.springframework.web: DEBUG
+    guru.springframework.controllers: DEBUG
+    org.hibernate: DEBUG
+    com.citi: DEBUG
+
+    
+from: git
